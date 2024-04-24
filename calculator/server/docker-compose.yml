@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  mongodb:
+    container_name: mongodb
+    image: mongo
+    ports:
+      - 27017:27017
+  postgresql:
+    container_name: postgresql
+    image: postgres:16.1-alpine
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: root
