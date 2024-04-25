@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  postgresql:
+    container_name: postgresql
+    image: postgres:16.1-alpine
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: root
+  redis:
+    container_name: redis
+    image: redis:7.2.4-alpine
+    ports:
+      - 6379:6379

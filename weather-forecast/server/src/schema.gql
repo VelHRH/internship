@@ -1,0 +1,156 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type UserSettings {
+  id: Int!
+  locationNumber: Int!
+  theme: String!
+  language: String!
+}
+
+type User {
+  id: Int!
+  email: String!
+  refreshtoken: String
+  locations: [Location!]!
+  userSettings: UserSettings!
+}
+
+type Location {
+  id: Int!
+  name: String!
+  lat: Float!
+  lon: Float!
+  country: String!
+  state: String!
+  stars: Int!
+}
+
+type GetUserResponse {
+  id: Int!
+  email: String!
+  refreshtoken: String
+  locations: [Location!]!
+  userSettings: UserSettings!
+  hasPassword: Boolean!
+}
+
+type RefreshTokenResponse {
+  accesstoken: String!
+  refreshtoken: String!
+  expiresin: Float!
+}
+
+type LoginResponse {
+  accesstoken: String!
+  refreshtoken: String
+  expiresin: Float!
+  id: Int!
+  email: String!
+  locations: [Location!]!
+  userSettings: UserSettings!
+}
+
+type Wind {
+  speed: Float!
+  deg: Int!
+  gust: Float!
+}
+
+type CurrentWeather {
+  name: String!
+  icon: String!
+  temperature: Int!
+  feelsLike: Int!
+  pressure: Int!
+  humidity: Int!
+  wind: Wind!
+}
+
+type ForecastWeather {
+  name: String!
+  icon: String!
+  temperature: Int!
+  feelsLike: Int!
+  pressure: Int!
+  humidity: Int!
+  wind: Wind!
+  time: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Weather {
+  id: Int!
+  location: Location!
+  updatedAt: DateTime!
+  forecasts: [ForecastWeather!]!
+  current: CurrentWeather!
+}
+
+type Query {
+  getUser(id: Int): GetUserResponse
+  getLocation(id: Int!): Location!
+  getLocationByNameCountry(nameCountryInput: NameCountryInput!): Location!
+  locations(locationsInput: LocationsInput!): [Location!]!
+  topLocations: [Location!]!
+  getWeather(locationId: Int!): Weather!
+}
+
+input NameCountryInput {
+  name: String!
+  country: String!
+}
+
+input LocationsInput {
+  name: String!
+  limit: Int = 20
+  offset: Int = 0
+}
+
+type Mutation {
+  updateUser(id: Int!, updateUserInput: UpdateUserInput!): User!
+  addUserLocation(userLocationInput: UserLocationInput!): Location!
+  removeUserLocation(userLocationInput: UserLocationInput!): Location!
+  login(loginInput: LoginInput!): LoginResponse!
+  refresh: RefreshTokenResponse!
+  googleAuth(idToken: String!): LoginResponse!
+  signup(signupInput: LoginInput!): User!
+  logout: Boolean!
+}
+
+input UpdateUserInput {
+  password: UpdatePasswordInput
+  userSettings: UserSettingsInput
+  refreshtoken: String
+  googleId: String
+}
+
+input UpdatePasswordInput {
+  oldPassword: String
+  newPassword: String
+}
+
+input UserSettingsInput {
+  locationNumber: Int!
+  theme: String!
+  language: String!
+}
+
+input UserLocationInput {
+  userId: Int!
+  locationId: Int!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type Subscription {
+  fetchedWeather(locationId: Int!): Weather!
+}

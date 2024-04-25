@@ -1,0 +1,25 @@
+{
+  "name": "weather-forecast-common",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./build/index.js",
+  "scripts": {
+    "build": "rm -rf build && tsc",
+    "codegen": "graphql-codegen --verbose --config ./graphql/codegen.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.15.14",
+    "date-fns": "^3.6.0",
+    "ts-node": "^10.9.2",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^5.0.2",
+    "@graphql-codegen/client-preset": "^4.2.5",
+    "typescript": "^5.4.2"
+  }
+}
