@@ -68,3 +68,7 @@ const list = async () => {
 ```
 
 JsonWebToken library is used to sign and verify jwt tokens, and bcrypt library was helpful with hashing passwords inside database.
+
+## Code organisation
+
+The application has a classic three-layer architecture with a data layer, a services layer and a controller layer. All constants used in the project are placed in a separate directory in the form of enums. The router has a convenient and easily scalable structure. The middleware folder contains the functions necessary for intermediate processing of requests, and the utils folder contains other utility functions.

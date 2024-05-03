@@ -1,15 +1,13 @@
 import type { RequestHandler } from "controller/types";
 import type { AuthRequest } from "middleware/checkAuth";
-import TokenService from "service/token";
-import UserService from "service/user";
+import TokenService from "service/auth/token";
+import UserService from "service/auth/user";
 import { returnSuccess } from "utils/response";
 
 const login: RequestHandler = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-
     const user = await UserService.login(email, password);
-
     res.json(returnSuccess(user));
   } catch (err) {
     next(err);

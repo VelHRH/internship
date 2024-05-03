@@ -1,14 +1,17 @@
+import { CustomError } from "constants/errors";
+import { GoogleSettings } from "constants/google";
 import { createObjectCsvWriter } from "csv-writer";
 import fs from "fs";
 import { google } from "googleapis";
 import type { Profile } from "service/types";
+import ApiError from "utils/error/ApiError";
 
 type SaveParams = {
   data: Profile[];
-  dir: string;
+  dir?: string;
   fileName?: string;
-  sheetName: string;
-  spreadSheet: string;
+  sheetName?: string;
+  spreadSheet?: string;
 };
 
 const save = async ({
@@ -19,9 +22,10 @@ const save = async ({
   spreadSheet,
 }: SaveParams): Promise<void> => {
   try {
-    const path = `${dir && `${dir}/`}${
-      fileName || process.env.DEFAULT_FILENAME
-    }`;
+    if (!dir || !sheetName || !spreadSheet) {
+      throw ApiError.unprocessableEntity(CustomError.WRONG_PARAMS);
+    }
+    const path = `${dir}/${fileName || process.env.DEFAULT_FILENAME}`;
     const sheet = sheetName;
     saveToJson(data, path);
     await saveToCsv(data, path);
@@ -59,8 +63,8 @@ const saveToGoogle = async (
 ) => {
   try {
     const auth = new google.auth.GoogleAuth({
-      keyFile: "google_credentials.json",
-      scopes: "https://www.googleapis.com/auth/spreadsheets",
+      keyFile: GoogleSettings.CRED_FILE,
+      scopes: GoogleSettings.SPREADSHEET_API,
     });
 
     const googleSheets = google.sheets({ version: "v4" });
@@ -77,7 +81,7 @@ const saveToGoogle = async (
     await googleSheets.spreadsheets.values.update({
       auth,
       spreadsheetId,
-      range: `${sheet}!A1`,
+      range: `${sheet}!${GoogleSettings.SHEET_SCOPE}`,
       valueInputOption: "USER_ENTERED",
       requestBody: {
         values,

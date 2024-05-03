@@ -1,3 +1,4 @@
+import { PathName } from "constants/pathNames";
 import AuthController from "controller/auth";
 import ParserController from "controller/parser";
 import { checkAuth } from "middleware/checkAuth";
@@ -5,37 +6,37 @@ import { Method, type Route } from "router/types";
 
 const routes: Route[] = [
   {
-    path: "/parse",
+    path: PathName.PARSE,
     method: Method.GET,
     controller: ParserController.parse,
     middlewares: [checkAuth],
   },
   {
-    path: "/parse-requests",
+    path: PathName.PARSE_REQUEST,
     method: Method.GET,
     controller: ParserController.listRequests,
     middlewares: [],
   },
   {
-    path: "/auth/login",
+    path: PathName.LOGIN,
     method: Method.POST,
     controller: AuthController.login,
     middlewares: [],
   },
   {
-    path: "/auth/sign-up",
+    path: PathName.SIGN_UP,
     method: Method.POST,
     controller: AuthController.register,
     middlewares: [],
   },
   {
-    path: "/auth/refresh",
+    path: PathName.REFRESH,
     method: Method.POST,
     controller: AuthController.refresh,
     middlewares: [],
   },
   {
-    path: "/auth/logout",
+    path: PathName.LOGOUT,
     method: Method.GET,
     controller: AuthController.logout,
     middlewares: [checkAuth],

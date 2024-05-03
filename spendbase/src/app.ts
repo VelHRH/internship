@@ -1,3 +1,4 @@
+import { PathName } from "constants/pathNames";
 import "dotenv/config";
 import express, { Express } from "express";
 import errorHandler from "middleware/errorHandler";
@@ -13,7 +14,7 @@ const startApp = async (): Promise<void> => {
 
   app.listen(process.env.PORT, () => {
     console.log(
-      `Server is running on http://localhost:${process.env.PORT}/api`
+      `Server is running on http://localhost:${process.env.PORT}${PathName.API_PREFIX}`
     );
   });
 };

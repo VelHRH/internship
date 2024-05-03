@@ -3,8 +3,8 @@ import { db } from "db";
 import { userTable } from "db/schema";
 import "dotenv/config";
 import { eq } from "drizzle-orm/sql/expressions";
-import ApiError from "error/ApiError";
-import TokenService from "service/token";
+import TokenService from "service/auth/token";
+import ApiError from "utils/error/ApiError";
 
 const login = async (email: string, pass: string) => {
   const result = await db

@@ -1,12 +1,14 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
+import { CustomError } from "constants/errors";
 import type { Profile, SocialLinks } from "service/types";
+import ApiError from "utils/error/ApiError";
 
 const scrapeData = async () => {
   try {
     const url = process.env.SCRAPE_SOURCE;
     if (!url) {
-      throw new Error("Scrape source error");
+      throw ApiError.badRequest(CustomError.SCRAPE_SOURCE);
     }
     const response = await axios.get(url);
     const $ = cheerio.load(response.data);
@@ -29,6 +31,11 @@ const scrapeData = async () => {
       const socialLinks = extractSocialLinks(element, $);
       profiles.push({ name, role, image, socialLinks });
     });
+
+    if (!profiles.length) {
+      throw ApiError.internal(CustomError.SCRAPE);
+    }
+
     return profiles;
   } catch (err) {
     throw err;

@@ -1,13 +1,14 @@
+import { TokenDuration } from "constants/auth";
 import { db } from "db";
 import { user, userTable, type UserWithoutPassword } from "db/schema";
 import "dotenv/config";
 import { eq } from "drizzle-orm";
-import ApiError from "error/ApiError";
 import jwt from "jsonwebtoken";
+import ApiError from "utils/error/ApiError";
 
 const refresh = async (refreshToken?: string) => {
   if (!refreshToken) {
-    throw ApiError.unauthorised();
+    throw ApiError.unauthorized();
   }
   const tokenUser = jwt.verify(
     refreshToken,
@@ -17,7 +18,7 @@ const refresh = async (refreshToken?: string) => {
     await db.select(user).from(userTable).where(eq(userTable.id, tokenUser.id))
   )[0];
   if (dbUser?.refreshToken !== refreshToken) {
-    throw ApiError.unauthorised();
+    throw ApiError.unauthorized();
   }
   const tokens = createTokens(dbUser);
   await updateRefreshToken(dbUser.id, tokens.refreshToken);
@@ -32,12 +33,12 @@ const createTokens = (payload: UserWithoutPassword) => {
   const accessToken = create({
     payload,
     secret: String(process.env.ACCESS_TOKEN_SECRET),
-    expiresIn: "15s",
-  }); //TODO: tokenDuration const
+    expiresIn: TokenDuration.ACCESS_TOKEN,
+  });
   const refreshToken = create({
     payload,
     secret: String(process.env.REFRESH_TOKEN_SECRET),
-    expiresIn: "1d",
+    expiresIn: TokenDuration.REFRESH_TOKEN,
   });
   return { accessToken, refreshToken };
 };

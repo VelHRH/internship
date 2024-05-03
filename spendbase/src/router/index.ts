@@ -1,23 +1,23 @@
+import { PathName } from "constants/pathNames";
 import express, { IRouter, Router } from "express";
 import routes from "router/routes";
 import { Method } from "router/types";
+import ApiError from "utils/error/ApiError";
 
 type RouterMethod = keyof Pick<IRouter, "all">;
-
-const API_PREFIX = "/api";
 
 function createRouter(app: express.Application): void {
   const mainRouter = Router();
 
   for (let route of routes) {
     if (!Object.values(Method).includes(route.method)) {
-      throw new Error("Wrong api method");
+      throw ApiError.wrongMethod();
     }
     const curMethod = route.method.toLowerCase() as RouterMethod;
     mainRouter[curMethod](route.path, ...route.middlewares, route.controller);
   }
 
-  app.use(API_PREFIX, mainRouter);
+  app.use(PathName.API_PREFIX, mainRouter);
 }
 
 export default createRouter;

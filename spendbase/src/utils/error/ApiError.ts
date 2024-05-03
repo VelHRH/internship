@@ -1,4 +1,4 @@
-import RequestErrors from "error/requestErrors";
+import RequestErrors from "utils/error/requestErrors";
 import type { ErrorResponse } from "utils/response";
 
 type ObjectValues<T> = T[keyof T];
@@ -22,8 +22,8 @@ class ApiError implements ErrorResponse {
     return new ApiError(msg, RequestErrors.BAD_REQUEST.code);
   }
 
-  static unauthorised(msg: string = RequestErrors.UNAUTHORISED.message) {
-    return new ApiError(msg, RequestErrors.UNAUTHORISED.code);
+  static unauthorized(msg: string = RequestErrors.UNAUTHORIZED.message) {
+    return new ApiError(msg, RequestErrors.UNAUTHORIZED.code);
   }
 
   static unprocessableEntity(

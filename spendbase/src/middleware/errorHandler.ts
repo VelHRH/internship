@@ -1,6 +1,6 @@
-import ApiError from "error/ApiError";
-import RequestErrors from "error/requestErrors";
 import { ErrorRequestHandler } from "express";
+import ApiError from "utils/error/ApiError";
+import RequestErrors from "utils/error/requestErrors";
 import { returnError } from "utils/response";
 
 const errorHandler: ErrorRequestHandler = async (err, req, res, next) => {
