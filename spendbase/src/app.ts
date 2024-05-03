@@ -1,9 +1,7 @@
-import dotenv from "dotenv";
+import "dotenv/config";
 import express, { Express } from "express";
 import errorHandler from "middleware/errorHandler";
 import createRouter from "router";
-
-dotenv.config();
 
 const startApp = async (): Promise<void> => {
   const app: Express = express();

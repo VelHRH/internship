@@ -4,6 +4,8 @@ import { Method } from "router/types";
 
 type RouterMethod = keyof Pick<IRouter, "all">;
 
+const API_PREFIX = "/api";
+
 function createRouter(app: express.Application): void {
   const mainRouter = Router();
 
@@ -15,7 +17,7 @@ function createRouter(app: express.Application): void {
     mainRouter[curMethod](route.path, ...route.middlewares, route.controller);
   }
 
-  app.use("/api", mainRouter);
+  app.use(API_PREFIX, mainRouter);
 }
 
 export default createRouter;

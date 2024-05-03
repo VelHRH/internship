@@ -19,7 +19,9 @@ const save = async ({
   spreadSheet,
 }: SaveParams): Promise<void> => {
   try {
-    const path = `${dir}/${fileName || process.env.DEFAULT_FILENAME}`;
+    const path = `${dir && `${dir}/`}${
+      fileName || process.env.DEFAULT_FILENAME
+    }`;
     const sheet = sheetName;
     saveToJson(data, path);
     await saveToCsv(data, path);
