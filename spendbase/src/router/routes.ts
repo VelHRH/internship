@@ -11,6 +11,12 @@ const routes: Route[] = [
     middlewares: [checkAuth],
   },
   {
+    path: "/parse-requests",
+    method: Method.GET,
+    controller: ParserController.listRequests,
+    middlewares: [],
+  },
+  {
     path: "/auth/login",
     method: Method.POST,
     controller: AuthController.login,
@@ -30,7 +36,7 @@ const routes: Route[] = [
   },
   {
     path: "/auth/logout",
-    method: Method.POST,
+    method: Method.GET,
     controller: AuthController.logout,
     middlewares: [checkAuth],
   },

@@ -15,6 +15,20 @@
       "when": 1714757979386,
       "tag": "0001_typical_magik",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1714761029944,
+      "tag": "0002_useful_mockingbird",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1714762745840,
+      "tag": "0003_smiling_puff_adder",
+      "breakpoints": true
     }
   ]
 }
