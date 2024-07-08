@@ -23,7 +23,6 @@ export class WeatherService {
       },
       relations: ['location'],
     });
-
     return weather;
   }
   async get(locationId: number): Promise<Weather> {
