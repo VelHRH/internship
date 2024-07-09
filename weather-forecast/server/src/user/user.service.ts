@@ -20,11 +20,13 @@ import {
   translations,
 } from 'weather-forecast-common';
 import { GetUserResponse } from './dto/get-user-response.dto';
+import { CryptoService } from './crypto.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
+    private readonly cryptoService: CryptoService,
   ) {}
 
   async create(createUserInput: CreateUserInput): Promise<User> {
@@ -39,9 +41,8 @@ export class UserService {
       locationNumber: LocationNumber.DEFAULT,
       language: DEFAULT_LANGUAGE,
     };
-    const passwordHash =
-      createUserInput.password &&
-      (await this.hashPassword(createUserInput.password));
+    const enteredPassword = createUserInput.password;
+    const passwordHash = enteredPassword && (await this.cryptoService.hashPassword(enteredPassword));
     const newUser = this.userRepository.create({
       ...createUserInput,
       userSettings,
@@ -108,13 +109,6 @@ export class UserService {
     return userWithLocations!.locations;
   }
 
-  async comparePasswords(
-    password: string,
-    userPassword: string,
-  ): Promise<boolean> {
-    return bcrypt.compare(password, userPassword);
-  }
-
   private async updatePassword(
     password: UpdatePasswordInput,
     currPassword: string,
@@ -122,18 +116,14 @@ export class UserService {
     const { newPassword, oldPassword } = password;
 
     if (!oldPassword) {
-      return this.hashPassword(password.newPassword!);
+      return this.cryptoService.hashPassword(newPassword!);
     }
 
-    if (!(await this.comparePasswords(oldPassword, currPassword))) {
+    if (!(await this.cryptoService.comparePasswords(oldPassword, currPassword))) {
       throw new BadRequestException(
         translations.en[ErrorTranslationKey.WRONG_PASSWORD],
       );
     }
-    return this.hashPassword(newPassword!);
-  }
-
-  private async hashPassword(password: string): Promise<string> {
-    return bcrypt.hash(password, 10);
+    return this.cryptoService.hashPassword(newPassword!);
   }
 }

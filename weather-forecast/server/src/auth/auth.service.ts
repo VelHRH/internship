@@ -6,6 +6,7 @@ import { UserService } from 'user/user.service';
 import { ErrorTranslationKey, translations } from 'weather-forecast-common';
 import { LoginResponse } from './dto/login-response.dto';
 import { TokenService } from './token.service';
+import { CryptoService } from 'user/crypto.service';
 
 @Injectable()
 export class AuthService {
@@ -13,6 +14,7 @@ export class AuthService {
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
     private readonly tokenService: TokenService,
+    private readonly cryptoService: CryptoService,
   ) {}
 
   async validateUser(loginInput: LoginInput): Promise<User | null> {
@@ -21,7 +23,7 @@ export class AuthService {
     if (!user) {
       return null;
     }
-    const isValidPassword = await this.userService.comparePasswords(
+    const isValidPassword = await this.cryptoService.comparePasswords(
       pass,
       user.password,
     );

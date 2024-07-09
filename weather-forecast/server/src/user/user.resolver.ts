@@ -32,7 +32,6 @@ export class UserResolver {
     @Args('id', { type: () => Int }) id: number,
     @Args('updateUserInput') updateUserInput: UpdateUserInput,
   ): Promise<User> {
-    console.log(updateUserInput);
     return this.userService.update(id, updateUserInput);
   }
 

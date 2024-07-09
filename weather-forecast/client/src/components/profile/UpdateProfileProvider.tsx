@@ -78,7 +78,7 @@ const UpdateProfileProvider: FC<UpdateProfileProviderProps> = ({
     try {
       await updateUser({
         id: profile.id,
-        userSettings: { locationNumber, theme: mode },
+        userSettings: { locationNumber, theme: mode, language: profile.userSettings.language },
         password: data.password,
       });
       setIsChangePassword(false);

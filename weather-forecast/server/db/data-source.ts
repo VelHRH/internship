@@ -4,7 +4,6 @@ import { DataSource, DataSourceOptions } from 'typeorm';
 
 
 config({ path: resolve(__dirname, '../../.env') });
-console.log(process.env.POSTGRES_URL);
 
 export const dataSourceOptions: DataSourceOptions = {
   type: 'postgres',
